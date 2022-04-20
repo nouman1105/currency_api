@@ -5,14 +5,13 @@ export default createStore({
     currencies: [],
   },
   mutations: {
-    UPDATE_FAVORITES(state, payload) {
-      state.favorites = payload;
+    UPDATE_CURRENCIES(state, payload) {
+      state.currencies = payload;
     },
   },
   actions: {
     updateCurrencies(context, payload) {
-      return context.state.currencies = payload;
-    //   context.commit("UPDATE_FAVORITES", favorites);
+      context.commit("UPDATE_CURRENCIES", payload);
     },
   },
   getters: {

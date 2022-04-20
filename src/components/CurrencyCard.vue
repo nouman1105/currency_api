@@ -42,6 +42,7 @@ export default {
             resp.data.unshift({});
 
             this.$store.dispatch("updateCurrencies", resp.data);
+            this.currencies = this.$store.getters.currencies;
           })
           .catch((err) => {
             console.log(err);
