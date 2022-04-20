@@ -1,19 +1,13 @@
 <template>
   <li v-for="(currency, index) in currencies" :key="currency.id">
-    <h2>{{ index === 0 ? "Currency" : currency.name }}</h2>
+    <h2>{{ title(currency, index) }}</h2>
     <country-flag
-      :country="index === 0 ? '0' : currency.iso.toLowerCase()"
+      :country="toLowerIso(currency, index)"
       size="normal"
-      style="border-radius: 50%"
     ></country-flag>
-    <!-- <button v-if="index > 0" @click="toggleVisibility()">Open</button> -->
-    <ul v-if="!isVisible">
-      <li>
-        {{ index === 0 ? "Buying Rate" : rateCalc(currency.rate, "buy") }}
-      </li>
-      <li>
-        {{ index === 0 ? "Selling Rate" : rateCalc(currency.rate, "sell") }}
-      </li>
+    <ul>
+      <li>{{ buyingRate(currency, index) }}</li>
+      <li>{{ sellingRate(currency, index) }}</li>
     </ul>
   </li>
 </template>
@@ -36,6 +30,7 @@ export default {
       currencies: [],
     };
   },
+
   methods: {
     getData() {
       axios
@@ -49,9 +44,23 @@ export default {
           console.log(err);
         });
     },
-    toggleVisibility() {
-      return (this.isVisible = !this.isVisible);
+
+    title(currency, index) {
+      return index === 0 ? "Currency" : currency.name;
     },
+
+    toLowerIso(currency, index) {
+      return index === 0 ? "0" : currency.iso.toLowerCase();
+    },
+
+    sellingRate(currency, index) {
+      return index === 0 ? "Selling Rate" : this.rateCalc(currency.rate, "sell");
+    },
+
+    buyingRate(currency, index) {
+      return index === 0 ? "Buying Rate" : this.rateCalc(currency.rate, "buy");
+    },
+
     rateCalc(rate, op) {
       let r = rate;
       return op == "buy"
@@ -79,3 +88,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#country-flag {
+  border-radius: 50%;
+}
+</style>
