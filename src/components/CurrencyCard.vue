@@ -28,22 +28,27 @@ export default {
   data() {
     return {
       isVisible: false,
-      currencies: [],
+      currencies: this.$store.getters.currencies,
     };
   },
 
   methods: {
     getData() {
-      axios
-        .get("https://currency-api.go.yj.fr/api/v1/list")
-        .then((resp) => {
-          resp.data.shift();
-          resp.data.unshift({});
-          this.currencies = resp.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (this.$store.getters.currencies.length === 0) {
+        axios
+          .get("https://currency-api.go.yj.fr/api/v1/list")
+          .then((resp) => {
+            resp.data.shift();
+            resp.data.unshift({});
+
+            this.$store.dispatch("updateCurrencies", resp.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.currencies = this.$store.getters.currencies;
+      }
     },
 
     title(currency, index) {
@@ -55,7 +60,9 @@ export default {
     },
 
     sellingRate(currency, index) {
-      return index === 0 ? "Selling Rate" : this.rateCalc(currency.rate, "sell");
+      return index === 0
+        ? "Selling Rate"
+        : this.rateCalc(currency.rate, "sell");
     },
 
     buyingRate(currency, index) {
