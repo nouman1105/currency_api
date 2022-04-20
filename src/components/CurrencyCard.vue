@@ -3,6 +3,7 @@
     <h2>{{ title(currency, index) }}</h2>
     <country-flag
       :country="toLowerIso(currency, index)"
+      class="flag"
       size="normal"
     ></country-flag>
     <ul>
@@ -90,7 +91,7 @@ export default {
 </script>
 
 <style scoped>
-#country-flag {
+.flag {
   border-radius: 50%;
 }
 </style>
